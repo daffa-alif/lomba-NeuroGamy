@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Header Section -->
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">Digital Library</h1>
+        <h1 class="text font-bold text-gray-800 mb-4">Digital Library</h1>
         <p class="text-gray-600 text-lg max-w-2xl mx-auto">
             Discover our extensive collection of digital books across various categories. 
             Find, read, and download books that inspire and educate.
