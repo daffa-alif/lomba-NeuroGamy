@@ -152,23 +152,21 @@
                         <p class="text-gray-600 text-sm mb-4 line-clamp-3">
                             {{ $book->book_description ?? 'No description available.' }}
                         </p>
-
                         <!-- Action Buttons -->
                         <div class="flex gap-2">
                             <a 
-                                href="{{ route('library.show', $book->id) }}" 
-                                class="flex-1 bg-blue-600 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                            >
-                                View Details
-                            </a>
-                            <a 
                                 href="{{ route('library.download', $book->id) }}" 
                                 class="bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors"
-                                title="Download {{ $book->book_title }}"
-                            >
+                                title="Download {{ $book->book_title }}">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                 </svg>
+                            </a>
+                            <a 
+                                href="{{ route('reading.index', $book->id) }}" 
+                                class="bg-purple-600 text-white py-2 px-3 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                                title="Read {{ $book->book_title }}">
+                                Read This Book
                             </a>
                         </div>
                     </div>
