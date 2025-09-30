@@ -27,7 +27,7 @@ public function store(Request $request)
 
     // ✅ Redirect to confirmation page after success
     return redirect()
-        ->route('Confirmation', ['id' => $log->id])
+        ->route('confirmation', ['id' => $log->id])
         ->with('success', 'Log berhasil dibuat. Silakan lanjut ke kuis.');
 }
 
