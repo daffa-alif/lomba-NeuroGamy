@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\{AiController, AuthController, BookController, UserController, BookClassificationController, LibraryController, ReadingController, ScoreLogsController, QuizController, ProfileController};
+use App\Http\Controllers\{AiController, AuthController, BookController, UserController, BookClassificationController, LibraryController, ReadingController, ScoreLogsController, QuizController};
 use App\Models\Book;
 
 Route::get('/', function () {
@@ -105,8 +105,6 @@ Route::post('/quiz/submit', [QuizController::class, 'submit'])
     Route::get('/quiz/end', function () {
     return view('end');
 })->name('quiz.end');
-
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
 
 });
 

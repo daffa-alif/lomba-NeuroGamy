@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\{AiController, AuthController, BookController, UserController, BookClassificationController, LibraryController, ReadingController, ScoreLogsController, QuizController, ProfileController};
+use App\Http\Controllers\{AiController, AuthController, BookController, UserController, BookClassificationController, LibraryController, ReadingController, ScoreLogsController, QuizController};
 use App\Models\Book;
 
 Route::get('/', function () {
@@ -91,22 +91,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reading/{book}/summarize', [ReadingController::class, 'summarize'])->name('reading.summarize');
     Route::post('/scorelogs', [ScoreLogsController::class, 'store'])->name('scorelogs.store');
 
-Route::get('/quiz/confirmation/{book}/{pages?}', [QuizController::class, 'Confirmation'])
-    ->name('Confirmation');
-
-// Halaman quiz
-Route::get('/quiz', [QuizController::class, 'index'])
-    ->name('quiz.index');
-
-// Submit jawaban quiz
-Route::post('/quiz/submit', [QuizController::class, 'submit'])
-    ->name('quiz.submit');
-
-    Route::get('/quiz/end', function () {
-    return view('end');
-})->name('quiz.end');
-
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-
+  Route::get('/quiz/confirmation', [QuizController::class, 'Confirmation'])->name('Confirmation');
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.index');
+    Route::post('/quiz/submit', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
+    Route::get('/quiz/regenerate', [QuizController::class, 'regenerateQuiz'])->name('quiz.regenerate');
+    Route::get('/quiz/results', [QuizController::class, 'results'])->name('quiz.results');
 });
 

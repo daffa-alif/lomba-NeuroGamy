@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{ScoreLogs,Book};
+use App\Models\ScoreLogs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Auth;
 
 class ScoreLogsController extends Controller

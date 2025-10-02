@@ -12,31 +12,29 @@ use App\Models\ScoreLogs;
 class QuizController extends Controller
 {
     // Halaman konfirmasi sebelum masuk quiz
-  public function Confirmation($book, $pages = null)
+   public function Confirmation($book, $pages = null)
 {
     $bookModel = Book::findOrFail($book);
 
-    // Ambil log terakhir untuk user & book (bukan bikin baru)
-    $log = ScoreLogs::where('books_id', $bookModel->id)
-        ->where('user_id', Auth::id())
-        ->latest()
-        ->first();
-
-    if (!$log) {
-        return back()->with('error', 'Log bacaan tidak ditemukan. Silakan baca buku dulu.');
-    }
+    // Buat log awal (jika belum ada) untuk user & book ini
+    $log = ScoreLogs::create([
+        'books_id' => $bookModel->id,
+        'title'    => "Quiz untuk {$bookModel->book_title}" . ($pages ? " (halaman $pages)" : ""),
+        'user_id'  => Auth::id(),
+        'score'    => 0,  // default 0 dulu
+        'pages'    => $pages ?? 0,
+    ]);
 
     return view('Quiz.confirmation', [
         'book' => $bookModel,
         'pages' => $pages,
-        'scorelog_id' => $log->id, // ✅ kirim ID log yang sudah ada
+        'scorelog_id' => $log->id, // kirim ke view
     ]);
 }
 
 
-
     // Halaman quiz
- public function index(Request $request)
+   public function index(Request $request)
 {
     $bookId = $request->query('book_id');
 
@@ -76,20 +74,18 @@ class QuizController extends Controller
         'quiz' => $quizData,
         'book' => $book,
         'pages' => $pages,
-        'scorelog_id' => $log->id, // ✅ lempar ke view
     ]);
 }
-
 
 
     // Submit jawaban
 public function submit(Request $request)
 {
-    $answers = $request->input('answers', []);
     $quizData = json_decode($request->input('quiz_data'), true);
-
+    $answers = $request->input('answers', []);
     $score = 0;
-    if ($quizData && isset($quizData['questions'])) {
+
+    if (isset($quizData['questions'])) {
         foreach ($quizData['questions'] as $question) {
             $id = $question['id'];
             if (isset($answers[$id]) && $answers[$id] == $question['correct_answer']) {
@@ -101,7 +97,7 @@ public function submit(Request $request)
     // Ambil ID ScoreLogs dari request
     $scoreLogId = $request->input('scorelog_id');
 
-    // Update skor di log yang sudah ada (tanpa update title lagi)
+    // Update skor di log yang sudah ada
     $log = ScoreLogs::find($scoreLogId);
     if ($log) {
         $log->update([
@@ -109,15 +105,11 @@ public function submit(Request $request)
         ]);
     }
 
-    // Ambil judul buku dari relasi log (lebih natural daripada quiz JSON)
-    $bookTitle = $log && $log->book ? $log->book->book_title : 'Buku';
-
     return view('quiz.end', [
         'score' => $score,
-        'title' => "Hasil Quiz: {$bookTitle}" // ✅ tidak lagi pakai "Quiz untuk $title (halaman ...)"
+        'title' => $quizData['title'] ?? 'Quiz'
     ]);
 }
-
 
 
 

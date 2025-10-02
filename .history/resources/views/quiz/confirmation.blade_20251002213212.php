@@ -7,10 +7,14 @@
         <p>Buku: <strong>{{ $book->book_title }}</strong></p>
         <p>Halaman yang dibaca: {{ $pages ?? 'Tidak ada' }}</p>
 
-        <a href="{{ route('quiz.index', ['book_id' => $book->id]) }}"
-           class="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-            Mulai Quiz
-        </a>
+        <form action="{{ route('quiz.submit') }}" method="POST">
+    @csrf
+    <input type="hidden" name="books_id" value="{{ $book->id }}">
+    <input type="hidden" name="scorelog_id" value="{{ $scorelog_id }}">
+    <!-- form quiz lainnya -->
+    <button type="submit">Submit</button>
+</form>
+
     </div>
 </div>
 @endsection

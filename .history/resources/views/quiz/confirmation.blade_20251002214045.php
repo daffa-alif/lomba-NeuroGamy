@@ -7,10 +7,11 @@
         <p>Buku: <strong>{{ $book->book_title }}</strong></p>
         <p>Halaman yang dibaca: {{ $pages ?? 'Tidak ada' }}</p>
 
-        <a href="{{ route('quiz.index', ['book_id' => $book->id]) }}"
-           class="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-            Mulai Quiz
-        </a>
+        <a href="{{ route('quiz.index', ['book_id' => $book->id, 'scorelog_id' => $scorelog_id]) }}"
+   class="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    Mulai Quiz
+</a>
+
     </div>
 </div>
 @endsection

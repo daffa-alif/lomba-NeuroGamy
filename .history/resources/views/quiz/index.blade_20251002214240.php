@@ -1,6 +1,4 @@
 @extends("layouts.app")
-
-@section("content")
 <form id="quiz-form" method="POST" action="{{ route('quiz.submit') }}" class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
     @csrf
     <input type="hidden" name="books_id" value="{{ $book->id }}">
@@ -27,5 +25,4 @@
         Submit Jawaban
     </button>
 </form>
-
 @endsection

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{ScoreLogs,Book};
+use App\Models\{ScoreLogs,book};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

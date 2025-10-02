@@ -91,18 +91,4 @@ class ReadingController extends Controller
             ], 500);
         }
     }
-
-    public function finish(Request $request, $id)
-{
-    $book = Book::findOrFail($id);
-
-    // misalnya jumlah halaman yang sudah dibaca dikirim lewat request
-    $pagesRead = $request->input('pages_read', 0);
-
-    return redirect()->route('Confirmation', [
-        'book' => $book->id,
-        'pages' => $pagesRead,
-    ]);
-}
-
 }

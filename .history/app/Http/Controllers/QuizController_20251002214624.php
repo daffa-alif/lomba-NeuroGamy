@@ -12,27 +12,25 @@ use App\Models\ScoreLogs;
 class QuizController extends Controller
 {
     // Halaman konfirmasi sebelum masuk quiz
-  public function Confirmation($book, $pages = null)
+   public function Confirmation($book, $pages = null)
 {
     $bookModel = Book::findOrFail($book);
 
-    // Ambil log terakhir untuk user & book (bukan bikin baru)
-    $log = ScoreLogs::where('books_id', $bookModel->id)
-        ->where('user_id', Auth::id())
-        ->latest()
-        ->first();
-
-    if (!$log) {
-        return back()->with('error', 'Log bacaan tidak ditemukan. Silakan baca buku dulu.');
-    }
+    // Buat log awal (jika belum ada) untuk user & book ini
+    $log = ScoreLogs::create([
+        'books_id' => $bookModel->id,
+        'title'    => "Quiz untuk {$bookModel->book_title}" . ($pages ? " (halaman $pages)" : ""),
+        'user_id'  => Auth::id(),
+        'score'    => 0,  // default 0 dulu
+        'pages'    => $pages ?? 0,
+    ]);
 
     return view('Quiz.confirmation', [
         'book' => $bookModel,
         'pages' => $pages,
-        'scorelog_id' => $log->id, // ✅ kirim ID log yang sudah ada
+        'scorelog_id' => $log->id, // kirim ke view
     ]);
 }
-
 
 
     // Halaman quiz
