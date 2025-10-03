@@ -36,8 +36,7 @@ class QuizController extends Controller
 
 
     // Halaman quiz
- // Halaman quiz
-public function index(Request $request)
+ public function index(Request $request)
 {
     $bookId = $request->query('book_id');
 
@@ -55,8 +54,19 @@ public function index(Request $request)
     $book = $log->book;
     $pages = $log->pages;
 
-    // 🔥 Selalu generate quiz baru tanpa cek/simpan file JSON
-    $quizData = $this->generateQuizWithGemini($book, $pages);
+    $quizPath = "quiz/{$bookId}_{$pages}.json";
+    $quizData = null;
+
+    if (\Illuminate\Support\Facades\Storage::exists($quizPath)) {
+        $quizData = json_decode(\Illuminate\Support\Facades\Storage::get($quizPath), true);
+    } else {
+        // 🔥 generate quiz sesuai buku + halaman yang dibaca
+        $quizData = $this->generateQuizWithGemini($book, $pages);
+
+        if ($quizData && is_array($quizData)) {
+            \Illuminate\Support\Facades\Storage::put($quizPath, json_encode($quizData));
+        }
+    }
 
     if (!is_array($quizData) || empty($quizData['questions'])) {
         return back()->with('error', 'Quiz gagal dibuat.');
@@ -66,10 +76,9 @@ public function index(Request $request)
         'quiz' => $quizData,
         'book' => $book,
         'pages' => $pages,
-        'scorelog_id' => $log->id, // ✅ tetap lempar ke view
+        'scorelog_id' => $log->id, // ✅ lempar ke view
     ]);
 }
-
 
 
 

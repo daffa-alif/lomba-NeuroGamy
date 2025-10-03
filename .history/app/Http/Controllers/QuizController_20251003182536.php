@@ -36,8 +36,7 @@ class QuizController extends Controller
 
 
     // Halaman quiz
- // Halaman quiz
-public function index(Request $request)
+ public function index(Request $request)
 {
     $bookId = $request->query('book_id');
 
@@ -55,8 +54,19 @@ public function index(Request $request)
     $book = $log->book;
     $pages = $log->pages;
 
-    // 🔥 Selalu generate quiz baru tanpa cek/simpan file JSON
-    $quizData = $this->generateQuizWithGemini($book, $pages);
+    $quizPath = "quiz/{$bookId}_{$pages}.json";
+    $quizData = null;
+
+    if (\Illuminate\Support\Facades\Storage::exists($quizPath)) {
+        $quizData = json_decode(\Illuminate\Support\Facades\Storage::get($quizPath), true);
+    } else {
+        // 🔥 generate quiz sesuai buku + halaman yang dibaca
+        $quizData = $this->generateQuizWithGemini($book, $pages);
+
+        if ($quizData && is_array($quizData)) {
+            \Illuminate\Support\Facades\Storage::put($quizPath, json_encode($quizData));
+        }
+    }
 
     if (!is_array($quizData) || empty($quizData['questions'])) {
         return back()->with('error', 'Quiz gagal dibuat.');
@@ -66,10 +76,9 @@ public function index(Request $request)
         'quiz' => $quizData,
         'book' => $book,
         'pages' => $pages,
-        'scorelog_id' => $log->id, // ✅ tetap lempar ke view
+        'scorelog_id' => $log->id, // ✅ lempar ke view
     ]);
 }
-
 
 
 
@@ -114,7 +123,7 @@ public function submit(Request $request)
 
 
     // Dummy generator (bisa diganti API Gemini)
- private function generateQuizWithGemini(Book $book = null, $pages = null)
+private function generateQuizWithGemini(Book $book = null, $pages = null)
 {
     $title = $book->book_title ?? 'Buku';
     $pageInfo = $pages ? "halaman $pages" : "beberapa halaman";
@@ -125,25 +134,10 @@ public function submit(Request $request)
         return null;
     }
 
-    // Prompt ke Gemini (gunakan heredoc biar rapi)
+    // Prompt ke Gemini
     $prompt = <<<EOT
 Buatkan 3 soal pilihan ganda (4 opsi A-D) berdasarkan buku berjudul "$title", khusus dari $pageInfo.
-Format jawaban HARUS JSON valid dengan struktur:
-
-{
-  "title": "Quiz untuk $title ($pageInfo)",
-  "description": "Latihan soal berdasarkan bacaan dari buku $title.",
-  "questions": [
-    {
-      "id": 1,
-      "question": "...?",
-      "options": {"A":"...","B":"...","C":"...","D":"..."},
-      "correct_answer": "A"
-    }
-  ]
-}
-
-Jangan ada teks tambahan, hanya JSON valid saja.
+Tampilkan langsung dalam format teks biasa.
 EOT;
 
     $endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
@@ -169,7 +163,7 @@ EOT;
 
         $json = $response->json();
 
-        // Ambil output teks
+        // Ambil output teks mentah
         $output = $json['candidates'][0]['content']['parts'][0]['text'] ?? null;
 
         if (!$output) {
@@ -177,24 +171,14 @@ EOT;
             return null;
         }
 
-        // Bersihkan kode block ```json ... ```
-        $output = preg_replace('/^```json|```$/m', '', trim($output));
-
-        // Decode JSON
-        $quizData = json_decode($output, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            \Log::error("JSON decode error: " . json_last_error_msg() . " | Output: " . $output);
-            return null;
-        }
-
-        return $quizData;
+        return $output; // langsung return teks tanpa decode JSON
 
     } catch (\Throwable $e) {
         \Log::error('Error Gemini Quiz: ' . $e->getMessage());
         return null;
     }
 }
+
 
 
 
