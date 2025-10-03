@@ -8,7 +8,7 @@
         <table class="min-w-full text-sm text-left text-gray-600">
             <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
                 <tr>
-                    <th class="px-6 py-3">#</th>
+                    <th class="px-6 py-3">No</th>
                     <th class="px-6 py-3">Name</th>
                     <th class="px-6 py-3">Email</th>
                     <th class="px-6 py-3">Role</th>

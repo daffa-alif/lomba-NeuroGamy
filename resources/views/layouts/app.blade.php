@@ -11,69 +11,85 @@
 
     <!-- CSRF Token for JS fetch -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Google Fonts: Inter -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body class="antialiased bg-gray-50 text-gray-800 font-sans">
+<body class="antialiased bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
     <!-- Navbar -->
-    <nav class="bg-white border-b border-gray-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav class="bg-white">
+        <div class="container mx-auto max-w-6xl px-6 py-6 flex justify-between items-center">
             <!-- Logo -->
-            <a href="{{ url('/') }}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition">
-                NeuroGamy
+            <a href="{{ url('/') }}" class="text-2xl font-bold tracking-tight text-gray-800 hover:text-black transition">
+                NeuroSimplicity
             </a>
 
-            <!-- Menu -->
-            <div class="flex items-center space-x-6">
-                <a href="{{ url('/library') }}" class="text-gray-700 hover:text-blue-600 transition">Library</a>
-
+            <!-- Right Side Menu -->
+            <div class="flex items-center space-x-8">
                 @auth
-                <!-- Profile -->
-                <div class="flex items-center space-x-3">
-                    <!-- Avatar -->
-                    <a href="{{ route('profile.index') }}" class="w-9 h-9 rounded-full overflow-hidden border border-gray-300">
-                        @if(Auth::user()->profile_image)
-                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" 
-                                 alt="Profile" class="w-full h-full object-cover">
-                        @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" 
-                                 alt="Profile" class="w-full h-full object-cover">
-                        @endif
-                    </a>
+                    <!-- Menu for AUTHENTICATED USERS -->
+                    <div class="flex items-center space-x-8">
+                        <!-- Library Link -->
+                        <a href="{{ url('/library') }}" class="text-gray-700 font-semibold hover:text-black transition">Library</a>
 
-                    <!-- Username -->
-                    <a href="{{ route('profile.index') }}" 
-                       class="text-sm font-medium text-gray-800 hover:text-blue-600 transition">
-                        {{ Auth::user()->name }}
-                    </a>
+                        <!-- Avatar and Username -->
+                        <a href="{{ route('profile.index') }}" class="flex items-center space-x-3 group">
+                            <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-gray-300 group-hover:border-black transition">
+                                @if(Auth::user()->profile_image)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" 
+                                        alt="Profile" class="w-full h-full object-cover">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random" 
+                                        alt="Profile" class="w-full h-full object-cover">
+                                @endif
+                            </div>
+                            <span class="font-semibold text-gray-800 group-hover:text-black transition">
+                                {{ Auth::user()->name }}
+                            </span>
+                        </a>
 
-                    <!-- Logout -->
-                    <form action="{{ route('logout') }}" method="POST" class="ml-2">
-                        @csrf
-                        <button type="submit" 
-                                class="px-3 py-1 text-xs text-red-600 border border-red-300 rounded hover:bg-red-50 transition">
-                            Logout
-                        </button>
-                    </form>
-                </div>
+                        <!-- Logout Button -->
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" 
+                                    class="bg-black text-white py-2 px-5 rounded-md hover:bg-gray-800 transition font-semibold">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 @else
-                    <a href="{{ url('/login') }}" class="text-gray-700 hover:text-blue-600 transition">Login</a>
-                    <a href="{{ url('/register') }}" class="text-gray-700 hover:text-blue-600 transition">Register</a>
+                    <!-- Menu for GUESTS -->
+                    <div class="flex items-center space-x-8">
+                         <a href="{{ url('/library') }}" class="text-gray-700 font-semibold hover:text-black transition">Library</a>
+                        <a href="{{ url('/login') }}" class="text-gray-700 font-semibold hover:text-black transition">Login</a>
+                        <a href="{{ url('/register') }}" class="bg-black text-white py-2 px-5 rounded-md hover:bg-gray-800 transition font-semibold">
+                            Register
+                        </a>
+                    </div>
                 @endauth
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-6 py-8">
+    <!-- Main Content (Konten dinamis akan dimuat di sini) -->
+    <main class="flex-grow">
         @yield('content')
     </main>
 
     <!-- Footer -->
-    <footer class="mt-12 border-t border-gray-200 py-6 text-center text-gray-500 text-sm">
+    <footer class="mt-auto border-t border-gray-200 py-6 text-center text-gray-500 text-sm">
         &copy; {{ date('Y') }} 
-        <span class="font-semibold text-blue-600">{{ config('app.name', 'Laravel Chatbot') }}</span>. 
+        <span class="font-semibold text-gray-800">{{ config('app.name', 'Neurogamy') }}</span>. 
         All rights reserved.
     </footer>
 
 </body>
 </html>
+

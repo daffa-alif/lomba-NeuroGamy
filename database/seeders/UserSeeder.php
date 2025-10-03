@@ -20,11 +20,11 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
         User::create([
-            'name' => 'user',
-            'email' => 'user@gmail.com',
+            'name' => 'AdminTlahDatang',
+            'email' => 'blabla@gmail.com',
             // biarkan password kosong dulu, nanti kamu isi manual / hash sendiri
-            'password' => 'Fullammo9', 
-            'role' => 'user',
-        ]);
+            'password' => 'adhdadhd',
+            'role' => 'admin',
+]);
     }
 }
