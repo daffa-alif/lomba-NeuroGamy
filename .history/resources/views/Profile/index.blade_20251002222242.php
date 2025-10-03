@@ -4,32 +4,22 @@
 <div class="container mx-auto p-6">
 
     <!-- Profil User -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center space-x-4">
-            <!-- Foto Profil -->
-            <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
-                @if($profileImage)
-                    <img src="{{ asset('storage/' . $profileImage) }}" alt="Profile"
-                         class="w-full h-full object-cover">
-                @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($username) }}&background=random"
-                         alt="Profile" class="w-full h-full object-cover">
-                @endif
-            </div>
-
-            <!-- Nama -->
-            <div>
-                <h2 class="text-xl font-bold">{{ $username }}</h2>
-                <p class="text-gray-600 text-sm">Statistik bacaan & quiz</p>
-            </div>
+    <div class="flex items-center space-x-4 mb-8">
+        <!-- Foto Profil -->
+        <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+            @if($profileImage)
+                <img src="{{ asset('storage/' . $profileImage) }}" alt="Profile"
+                     class="w-full h-full object-cover">
+            @else
+                <img src="https://ui-avatars.com/api/?name={{ urlencode($username) }}&background=random"
+                     alt="Profile" class="w-full h-full object-cover">
+            @endif
         </div>
 
-        <!-- Tombol Edit -->
+        <!-- Nama -->
         <div>
-            <a href="{{ route('profile.edit') }}"
-               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-                Edit Profil
-            </a>
+            <h2 class="text-xl font-bold">{{ $username }}</h2>
+            <p class="text-gray-600 text-sm">Statistik bacaan & quiz</p>
         </div>
     </div>
 

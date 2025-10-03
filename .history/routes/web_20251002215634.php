@@ -103,8 +103,6 @@ Route::post('/quiz/submit', [QuizController::class, 'submit'])
 })->name('quiz.end');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-      Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
 });
 

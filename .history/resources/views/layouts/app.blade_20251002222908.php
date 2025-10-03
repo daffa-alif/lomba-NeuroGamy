@@ -19,7 +19,7 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="{{ url('/') }}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition">
-                NeuroGamy
+                
             </a>
 
             <!-- Menu -->

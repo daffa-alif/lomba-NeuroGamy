@@ -27,7 +27,7 @@
         <div class="container mx-auto px-4">
             <h2 class="text-5xl font-extrabold mb-4">Discover Knowledge with Neurogamy</h2>
             <p class="text-xl mb-8">Your ultimate library-enhanced platform for seamless learning and exploration.</p>
-            <a href="" class="bg-black text-white py-3 px-6 rounded-full text-lg hover:bg-gray-800 transition">Get Started Now</a>
+            <a href="# " class="bg-black text-white py-3 px-6 rounded-full text-lg hover:bg-gray-800 transition">Get Started Now</a>
         </div>
     </section>
 
@@ -66,7 +66,7 @@
         <div class="container mx-auto px-4">
             <h3 class="text-3xl font-bold mb-6">Start Your Journey Today</h3>
             <p class="text-lg mb-8">Sign up now to unlock the full potential of Neurogamy's library-enhanced platform.</p>
-            <form action="" method="POST" class="flex justify-center">
+            <form action="{{ route('signup') }}" method="POST" class="flex justify-center">
                 @csrf
                 <input type="email" name="email" placeholder="Enter your email" class="p-3 rounded-l-lg text-black" required>
                 <button type="submit" class="bg-white text-black py-3 px-6 rounded-r-lg hover:bg-gray-200 transition">Sign Up</button>
