@@ -66,7 +66,7 @@
         <div class="container mx-auto px-4">
             <h3 class="text-3xl font-bold mb-6">Start Your Journey Today</h3>
             <p class="text-lg mb-8">Sign up now to unlock the full potential of Neurogamy's library-enhanced platform.</p>
-            <form action="{{ route('register') }}" method="POST" class="flex justify-center">
+            <form action="{{ route('getSignIn') }}" method="POST" class="flex justify-center">
                 @csrf
                 <input type="email" name="email" placeholder="Enter your email" class="p-3 rounded-l-lg text-black" required>
                 <button type="submit" class="bg-white text-black py-3 px-6 rounded-r-lg hover:bg-gray-200 transition">Sign Up</button>
