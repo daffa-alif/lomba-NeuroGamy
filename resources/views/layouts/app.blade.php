@@ -20,6 +20,8 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
+
+    @stack('styles')
 </head>
 <body class="antialiased bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 

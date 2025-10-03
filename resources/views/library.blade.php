@@ -3,10 +3,10 @@
 @section('title', 'Digital Library')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-12">
     <!-- Header Section -->
     <div class="text-center mb-12">
-        <h1 class="text font-bold text-gray-800 mb-4">Digital Library</h1>
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Digital Library</h1>
         <p class="text-gray-600 text-lg max-w-2xl mx-auto">
             Discover our extensive collection of digital books across various categories. 
             Find, read, and download books that inspire and educate.
@@ -14,11 +14,11 @@
     </div>
 
     <!-- Search and Filter Section -->
-    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="bg-white rounded-xl shadow-2xl p-8 mb-12 max-w-4xl mx-auto">
         <form method="GET" action="{{ route('library.index') }}" class="space-y-4 md:space-y-0 md:flex md:gap-4 md:items-end">
             <!-- Search Input -->
             <div class="flex-1">
-                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="search" class="block mb-2 font-bold text-gray-800">
                     Search Books
                 </label>
                 <div class="relative">
@@ -27,8 +27,8 @@
                         id="search" 
                         name="search" 
                         value="{{ $search ?? '' }}"
-                        placeholder="Search by title or description..."
-                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Search by title..."
+                        class="w-full pl-10 pr-4 py-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
                     >
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,13 +40,13 @@
 
             <!-- Category Filter -->
             <div class="md:w-64">
-                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                <label for="category" class="block mb-2 font-bold text-gray-800">
                     Category
                 </label>
                 <select 
                     id="category" 
                     name="category" 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-3 border border-gray-400 rounded-md focus:ring-2 focus:ring-black focus:border-black transition"
                 >
                     <option value="all" {{ ($selectedCategory ?? 'all') == 'all' ? 'selected' : '' }}>
                         All Categories
@@ -66,11 +66,8 @@
             <div>
                 <button 
                     type="submit" 
-                    class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                    class="w-full md:w-auto px-6 py-3 bg-black text-white font-semibold rounded-md hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors"
                 >
-                    <svg class="inline-block w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
                     Search
                 </button>
             </div>
@@ -80,9 +77,9 @@
                 <div>
                     <a 
                         href="{{ route('library.index') }}" 
-                        class="w-full md:w-auto inline-block px-4 py-2 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 transition-colors text-center"
+                        class="w-full md:w-auto inline-block px-6 py-3 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition-colors text-center"
                     >
-                        Clear Filters
+                        Clear
                     </a>
                 </div>
             @endif
@@ -90,118 +87,102 @@
     </div>
 
     <!-- Results Summary -->
-    <div class="flex justify-between items-center mb-6">
-        <div class="text-gray-600">
-            @if($search || ($selectedCategory && $selectedCategory !== 'all'))
-                <p>
-                    Showing {{ $books->count() }} of {{ $books->total() }} books
-                    @if($search)
-                        for "<span class="font-medium">{{ $search }}</span>"
-                    @endif
-                    @if($selectedCategory && $selectedCategory !== 'all')
-                        in <span class="font-medium">{{ $classifications->find($selectedCategory)->classification ?? 'Selected Category' }}</span>
-                    @endif
-                </p>
-            @else
-                <p>Showing {{ $books->count() }} of {{ $books->total() }} books</p>
-            @endif
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div class="text-gray-600">
+                @if($search || ($selectedCategory && $selectedCategory !== 'all'))
+                    <p>
+                        Showing {{ $books->count() }} of {{ $books->total() }} books
+                        @if($search)
+                            for "<span class="font-medium text-black">{{ $search }}</span>"
+                        @endif
+                        @if($selectedCategory && $selectedCategory !== 'all')
+                            in <span class="font-medium text-black">{{ $classifications->find($selectedCategory)->classification ?? 'Selected Category' }}</span>
+                        @endif
+                    </p>
+                @else
+                    <p>Showing {{ $books->count() }} of {{ $books->total() }} books</p>
+                @endif
+            </div>
         </div>
-        
-        <!-- View Toggle (Optional) -->
-        <div class="hidden md:flex gap-2">
-            <button id="gridView" class="p-2 bg-blue-600 text-white rounded-lg">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                </svg>
-            </button>
-            <button id="listView" class="p-2 bg-gray-300 text-gray-700 rounded-lg">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
 
-    <!-- Books Grid -->
-    @if($books->count() > 0)
-        <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            @foreach($books as $book)
-                <div class="book-card bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                    <!-- Book Cover/Icon -->
-                    <div class="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <div class="text-white text-center">
-                            <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
+        <!-- Books Grid -->
+        @if($books->count() > 0)
+            <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8">
+                @foreach($books as $book)
+                    <div class="book-card bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-2xl transition-shadow duration-300 flex flex-col">
+                        <!-- Book Visual -->
+                        <div class="h-48 bg-gray-50 flex items-center justify-center p-6 overflow-hidden rounded-t-xl">
+                            <!-- Abstract Ink SVG -->
+                            <svg class="w-24 h-24 text-black opacity-80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 20C44.77 20 0 64.77 0 120c0 47.38 35.04 86.88 80.62 98.19.11-.47.21-.94.32-1.42 5.3-23.44 2.37-47.53-8.8-69.1-12.8-24.8-14.28-54.8-4.2-82.07C78.43 38.8 89.02 29.53 100 20zm0 0c55.23 0 100 44.77 100 100 0 47.38-35.04 86.88-80.62 98.19-.11-.47-.21-.94-.32-1.42-5.3-23.44-2.37-47.53 8.8-69.1 12.8-24.8 14.28-54.8 4.2-82.07C121.57 38.8 110.98 29.53 100 20z" fill="currentColor"/>
                             </svg>
-                            <p class="text-sm font-medium">{{ strtoupper(pathinfo($book->file_name, PATHINFO_EXTENSION)) }}</p>
                         </div>
-                    </div>
 
-                    <!-- Book Info -->
-                    <div class="p-4">
-                        <div class="mb-2">
-                            <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                        <!-- Book Info -->
+                        <div class="p-6 flex-grow flex flex-col">
+                            <span class="inline-block self-start px-2 py-1 text-xs font-semibold bg-gray-100 text-gray-800 rounded-md mb-3">
                                 {{ $book->classification->classification ?? 'Uncategorized' }}
                             </span>
-                        </div>
-                        
-                        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2">
-                            {{ $book->book_title }}
-                        </h3>
-                        
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                            {{ $book->book_description ?? 'No description available.' }}
-                        </p>
-                        <!-- Action Buttons -->
-                        <div class="flex gap-2">
-                            <a 
-                                href="{{ route('library.download', $book->id) }}" 
-                                class="bg-green-600 text-white py-2 px-3 rounded-lg hover:bg-green-700 transition-colors"
-                                title="Download {{ $book->book_title }}">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </a>
-                            <a 
-                                href="{{ route('reading.index', $book->id) }}" 
-                                class="bg-purple-600 text-white py-2 px-3 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
-                                title="Read {{ $book->book_title }}">
-                                Read This Book
-                            </a>
+                            
+                            <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 flex-grow">
+                                {{ $book->book_title }}
+                            </h3>
+                            
+                            <p class="text-gray-600 text-sm mb-6 line-clamp-3">
+                                {{ $book->book_description ?? 'No description available.' }}
+                            </p>
+                            <!-- Action Buttons -->
+                            <div class="flex items-center gap-3 mt-auto">
+                                <a 
+                                    href="{{ route('reading.index', $book->id) }}" 
+                                    class="flex-1 text-center bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors text-sm font-semibold"
+                                    title="Read {{ $book->book_title }}">
+                                    Read This Book
+                                </a>
+                                <a 
+                                    href="{{ route('library.download', $book->id) }}" 
+                                    class="p-2 border-2 border-gray-300 text-gray-600 rounded-md hover:bg-gray-100 hover:border-gray-400 transition-colors"
+                                    title="Download {{ $book->book_title }}">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <!-- Pagination -->
-        <div class="flex justify-center">
-            {{ $books->links() }}
-        </div>
-    @else
-        <!-- No Books Found -->
-        <div class="text-center py-12">
-            <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-            </svg>
-            <h3 class="text-xl font-medium text-gray-800 mb-2">No books found</h3>
-            <p class="text-gray-600 mb-4">
+            <!-- Pagination -->
+            <div class="flex justify-center">
+                {{ $books->links() }}
+            </div>
+        @else
+            <!-- No Books Found -->
+            <div class="text-center py-16 bg-white rounded-xl shadow-lg border">
+                <svg class="w-20 h-20 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">No books found</h3>
+                <p class="text-gray-600 mb-6">
+                    @if($search || ($selectedCategory && $selectedCategory !== 'all'))
+                        Try adjusting your search criteria.
+                    @else
+                        No books are currently available in the library.
+                    @endif
+                </p>
                 @if($search || ($selectedCategory && $selectedCategory !== 'all'))
-                    Try adjusting your search criteria or browse all books.
-                @else
-                    No books are currently available in the library.
+                    <a 
+                        href="{{ route('library.index') }}" 
+                        class="inline-block bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-semibold"
+                    >
+                        Clear Search
+                    </a>
                 @endif
-            </p>
-            @if($search || ($selectedCategory && $selectedCategory !== 'all'))
-                <a 
-                    href="{{ route('library.index') }}" 
-                    class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    Browse All Books
-                </a>
-            @endif
-        </div>
-    @endif
+            </div>
+        @endif
+    </div>
 </div>
 
 @push('styles')
@@ -221,62 +202,9 @@
     }
     
     .book-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-5px);
     }
     
-    .book-card {
-        transition: all 0.3s ease;
-    }
-    
-    /* List view styles (optional feature) */
-    .list-view .book-card {
-        display: flex;
-        flex-direction: row;
-    }
-    
-    .list-view .book-card > div:first-child {
-        flex-shrink: 0;
-        width: 120px;
-        height: 120px;
-    }
-    
-    .list-view .book-card > div:last-child {
-        flex: 1;
-    }
 </style>
 @endpush
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // View toggle functionality (optional)
-    const gridViewBtn = document.getElementById('gridView');
-    const listViewBtn = document.getElementById('listView');
-    const container = document.getElementById('booksContainer');
-    
-    if (gridViewBtn && listViewBtn && container) {
-        gridViewBtn.addEventListener('click', function() {
-            container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8';
-            gridViewBtn.className = 'p-2 bg-blue-600 text-white rounded-lg';
-            listViewBtn.className = 'p-2 bg-gray-300 text-gray-700 rounded-lg';
-        });
-        
-        listViewBtn.addEventListener('click', function() {
-            container.className = 'list-view space-y-4 mb-8';
-            listViewBtn.className = 'p-2 bg-blue-600 text-white rounded-lg';
-            gridViewBtn.className = 'p-2 bg-gray-300 text-gray-700 rounded-lg';
-        });
-    }
-    
-    // Auto-submit form on category change (optional)
-    const categorySelect = document.getElementById('category');
-    if (categorySelect) {
-        categorySelect.addEventListener('change', function() {
-            // Uncomment the line below if you want auto-submit on category change
-            // this.form.submit();
-        });
-    }
-});
-</script>
-@endpush
-@endsection
+@endsection  

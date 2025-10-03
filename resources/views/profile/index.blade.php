@@ -1,85 +1,88 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container mx-auto p-6">
+@section('title', 'My Profile')
 
-    <!-- Profil User -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center space-x-4">
-            <!-- Foto Profil -->
-            <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+@section('content')
+<div class="container mx-auto p-6 space-y-12">
+
+    <!-- Profile Header -->
+    <div class="flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center space-x-6">
+            <!-- Profile Picture -->
+            <div class="w-24 h-24 rounded-full overflow-hidden shadow-lg border-4 border-white">
                 @if($profileImage)
                     <img src="{{ asset('storage/' . $profileImage) }}" alt="Profile"
                          class="w-full h-full object-cover">
                 @else
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($username) }}&background=random"
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($username) }}&background=random&color=fff&size=128"
                          alt="Profile" class="w-full h-full object-cover">
                 @endif
             </div>
 
-            <!-- Nama -->
+            <!-- Name and Subtitle -->
             <div>
-                <h2 class="text-xl font-bold">{{ $username }}</h2>
-                <p class="text-gray-600 text-sm">Statistik bacaan & quiz</p>
+                <h1 class="text-4xl font-bold text-gray-800">{{ $username }}</h1>
+                <p class="text-gray-600 text-lg">Statistik bacaan & quiz</p>
             </div>
         </div>
 
-        <!-- Tombol Edit -->
-        <div>
-            <a href="{{ route('profile.edit') }}"
-               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-                Edit Profil
-            </a>
+        <!-- Edit Button -->
+        <a href="{{ route('profile.edit') }}"
+           class="mt-4 md:mt-0 bg-black text-white py-2 px-6 rounded-md hover:bg-gray-800 transition font-semibold">
+            Edit Profil
+        </a>
+    </div>
+
+    <!-- Summary Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-2xl border">
+            <p class="text-gray-500 font-semibold">Jumlah Buku Dibaca</p>
+            <h3 class="text-4xl font-bold mt-2">{{ $totalBooks }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-2xl border">
+            <p class="text-gray-500 font-semibold">Jumlah Quiz</p>
+            <h3 class="text-4xl font-bold mt-2">{{ $totalQuizzes }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-2xl border">
+            <p class="text-gray-500 font-semibold">Rata-rata Skor</p>
+            <h3 class="text-4xl font-bold mt-2">{{ $averageScore ?? '-' }}</h3>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-2xl border">
+            <p class="text-gray-500 font-semibold">Skor Tertinggi</p>
+            <h3 class="text-4xl font-bold mt-2">{{ $highestScore ?? '-' }}</h3>
         </div>
     </div>
 
-    <!-- Statistik Ringkas -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500">Jumlah Buku Dibaca</p>
-            <h2 class="text-2xl font-bold">{{ $totalBooks }}</h2>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500">Jumlah Quiz</p>
-            <h2 class="text-2xl font-bold">{{ $totalQuizzes }}</h2>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500">Rata-rata Skor</p>
-            <h2 class="text-2xl font-bold">{{ $averageScore ?? '-' }}</h2>
-        </div>
-        <div class="bg-white p-4 rounded-lg shadow">
-            <p class="text-gray-500">Skor Tertinggi</p>
-            <h2 class="text-2xl font-bold">{{ $highestScore ?? '-' }}</h2>
-        </div>
-    </div>
-
-    <!-- Riwayat Quiz -->
-    <div class="bg-white p-6 rounded-lg shadow">
-        <h2 class="text-xl font-bold mb-4">Riwayat Quiz</h2>
-        <table class="w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border px-4 py-2 text-left">Judul Buku</th>
-                    <th class="border px-4 py-2">Halaman</th>
-                    <th class="border px-4 py-2">Skor</th>
-                    <th class="border px-4 py-2">Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($logs as $log)
+    <!-- Quiz History Table Card -->
+     <div class="bg-white p-8 rounded-xl shadow-2xl w-full border">
+        <h2 class="text-2xl font-bold mb-6">Riwayat Quiz</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs font-semibold">
                     <tr>
-                        <td class="border px-4 py-2">{{ $log->book->book_title ?? '-' }}</td>
-                        <td class="border px-4 py-2 text-center">{{ $log->pages }}</td>
-                        <td class="border px-4 py-2 text-center">{{ $log->score ?? '-' }}</td>
-                        <td class="border px-4 py-2">{{ $log->created_at->format('d M Y H:i') }}</td>
+                        <th class="p-4">Judul Buku</th>
+                        <th class="p-4 text-center">Halaman</th>
+                        <th class="p-4 text-center">Skor</th>
+                        <th class="p-4">Tanggal</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center p-4 text-gray-500">Belum ada data quiz.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="text-gray-700">
+                    @forelse($logs as $log)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 font-bold text-gray-800">{{ $log->book->book_title ?? '-' }}</td>
+                            <td class="p-4 text-center">{{ $log->pages }}</td>
+                            <td class="p-4 text-center font-bold">{{ $log->score ?? '-' }}</td>
+                            <td class="p-4">{{ $log->created_at->format('d M Y, H:i') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center p-8 text-gray-500">Belum ada data quiz.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection
+

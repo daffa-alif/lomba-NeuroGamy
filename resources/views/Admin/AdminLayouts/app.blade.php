@@ -86,10 +86,23 @@
                 <div class="flex-1 min-w-0">
                     <p class="text-gray-400 text-sm font-medium truncate">Admintlahtahdatang</p>
                 </div>
+                <!-- Dropdown -->
                 <div class="relative">
-                    <button class="text-gray-400 hover:text-white transition-colors">
+                    <button id="admin-menu-button" class="text-gray-400 hover:text-white transition-colors">
                         <i class="fas fa-ellipsis-v"></i>
                     </button>
+                    <!-- Dropdown Menu -->
+                    <div id="admin-menu" class="hidden absolute right-0 bottom-full mb-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                        <div class="py-1">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,6 +152,29 @@
             </div>
         </main>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('admin-menu-button');
+            const adminMenu = document.getElementById('admin-menu');
+
+            if (menuButton) {
+                menuButton.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Mencegah listener window langsung menutup menu
+                    adminMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Menutup dropdown jika klik di luar area menu
+            window.addEventListener('click', function(event) {
+                if (adminMenu && !adminMenu.classList.contains('hidden')) {
+                    if (!adminMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                        adminMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
